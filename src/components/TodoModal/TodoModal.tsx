@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
+  const [crossPressed, setCrossPressed] = useState(false);
+
+  const handleButtonDelete = () => {
+    setCrossPressed(true);
+
+    if (!crossPressed) {
+      return null;
+    }
+  };
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {true ? (
+      {false ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -19,7 +29,12 @@ export const TodoModal: React.FC = () => {
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <button type="button" className="delete" data-cy="modal-close" />
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onChange={handleButtonDelete}
+            />
           </header>
 
           <div className="modal-card-body">
