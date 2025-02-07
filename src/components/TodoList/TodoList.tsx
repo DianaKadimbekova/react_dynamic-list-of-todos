@@ -1,16 +1,12 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
-import { TodoModal } from '../TodoModal';
 
 interface Props {
   todos: Todo[];
+  onShowModal: (todo: Todo) => void;
 }
 
-const handleShowButton = () => {
-  <TodoModal />;
-};
-
-export const TodoList: React.FC<Props> = ({ todos }) => (
+export const TodoList: React.FC<Props> = ({ todos, onShowModal }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>
@@ -44,7 +40,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => (
               data-cy="selectButton"
               className="button"
               type="button"
-              onChange={handleShowButton}
+              onClick={() => onShowModal(todo)}
             >
               <span className="icon">
                 <i className="far fa-eye" />

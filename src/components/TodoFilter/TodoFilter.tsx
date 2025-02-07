@@ -1,28 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export const TodoFilter = () => {
-  const [selected, setSelected] = useState<string>('all');
-  const [query, setQuery] = useState('');
+interface TodoFilterProps {
+  selected: string;
+  query: string;
+  handleSelect: React.ChangeEventHandler<HTMLSelectElement>;
+  handleQuery: React.ChangeEventHandler<HTMLInputElement>;
+  handleQueryClear: () => void;
+}
 
-  const clickSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelected(event.target.value);
-  };
-
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
-
-  const handleInputClear = () => {
-    setQuery('');
-  };
-
+export const TodoFilter: React.FC<TodoFilterProps> = ({
+  selected,
+  query,
+  handleSelect,
+  handleQuery,
+  handleQueryClear,
+}) => {
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={clickSelect}
+            onChange={handleSelect}
             value={selected}
           >
             <option value="all">All</option>
@@ -39,7 +38,7 @@ export const TodoFilter = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={handleInput}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -51,7 +50,7 @@ export const TodoFilter = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={handleInputClear}
+              onClick={handleQueryClear}
             />
           </span>
         )}

@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { Loader } from '../Loader';
+import { Todo } from '../../types/Todo';
+import { User } from '../../types/User';
 
-export const TodoModal: React.FC = () => {
+interface TodoModalProps {
+  todo: Todo;
+  user: User;
+  onCLose: () => void;
+}
+
+export const TodoModal: React.FC<TodoModalProps> = ({
+  todo,
+  user,
+  onCLose,
+}) => {
   const [crossPressed, setCrossPressed] = useState(false);
 
-  const handleButtonDelete = () => {
+  const handleButtonDeleteModal = () => {
     setCrossPressed(true);
 
     if (!crossPressed) {
-      return null;
+      return setCrossPressed(false);
     }
   };
 
   return (
     <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
+      <div className="modal-background" onClick={onCLose} />
 
       {false ? (
         <Loader />
@@ -25,7 +37,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #2
+              Todo #{todo.id}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -33,23 +45,32 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onChange={handleButtonDelete}
+              onClick={() => onCLose}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              quis ut nam facilis et officia qui
+              {todo.title}
             </p>
 
-            <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
-              <strong className="has-text-danger">Planned</strong>
+            {todo.completed ? (
+              <p className="block" data-cy="modal-user">
+                <strong className="has-text-success">Done</strong>
 
-              {' by '}
+                {' by '}
 
-              <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-            </p>
+                <a href="mailto:Sincere@april.biz">{user.name}</a>
+              </p>
+            ) : (
+              <p className="block" data-cy="modal-user">
+                <strong className="has-text-danger">Planned</strong>
+
+                {' by '}
+
+                <a href="mailto:Sincere@april.biz">{user.name}</a>
+              </p>
+            )}
           </div>
         </div>
       )}
