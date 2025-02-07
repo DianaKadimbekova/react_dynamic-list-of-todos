@@ -57,6 +57,7 @@ export const App: React.FC = () => {
 
     getUser(todo.userId)
       .then(user => setSelectedUser(user))
+      // eslint-disable-next-line
       .catch(console.error);
   };
 
@@ -97,7 +98,7 @@ export const App: React.FC = () => {
         <TodoModal
           todo={selectedTodo}
           user={selectedUser}
-          onCLose={handleCloseModal}
+          onClose={handleCloseModal}
         />
       )}
     </>

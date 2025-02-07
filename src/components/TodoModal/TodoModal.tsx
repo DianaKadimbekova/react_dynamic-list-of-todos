@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
@@ -6,29 +6,29 @@ import { User } from '../../types/User';
 interface TodoModalProps {
   todo: Todo;
   user: User;
-  onCLose: () => void;
+  onClose: () => void;
 }
 
 export const TodoModal: React.FC<TodoModalProps> = ({
   todo,
   user,
-  onCLose,
+  onClose,
 }) => {
-  const [crossPressed, setCrossPressed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleButtonDeleteModal = () => {
-    setCrossPressed(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
 
-    if (!crossPressed) {
-      return setCrossPressed(false);
-    }
-  };
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" onClick={onCLose} />
+      <div className="modal-background" />
 
-      {false ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -45,7 +45,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => onCLose}
+              onClick={onClose}
             />
           </header>
 
@@ -60,7 +60,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
 
                 {' by '}
 
-                <a href="mailto:Sincere@april.biz">{user.name}</a>
+                <a href={`mailto:${user.email}`}>{user.name}</a>
               </p>
             ) : (
               <p className="block" data-cy="modal-user">
@@ -68,7 +68,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
 
                 {' by '}
 
-                <a href="mailto:Sincere@april.biz">{user.name}</a>
+                <a href={`mailto:${user.email}`}>{user.name}</a>
               </p>
             )}
           </div>
