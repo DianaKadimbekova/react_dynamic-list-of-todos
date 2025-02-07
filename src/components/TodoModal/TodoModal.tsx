@@ -19,7 +19,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 300);
+    });
 
     return () => clearTimeout(timer);
   }, []);

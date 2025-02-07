@@ -5,12 +5,14 @@ interface Props {
   todos: Todo[];
   onShowModal: (todo: Todo) => void;
   onCloseModal: () => void;
+  selectedTodo: Todo | null;
 }
 
 export const TodoList: React.FC<Props> = ({
   todos,
   onShowModal,
   onCloseModal,
+  selectedTodo,
 }) => {
   const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 
@@ -68,7 +70,7 @@ export const TodoList: React.FC<Props> = ({
                 onClick={() => handleShowModalButton(todo)}
               >
                 <span className="icon">
-                  {selectedTodoId === todo.id ? (
+                  {selectedTodo?.id === todo.id ? (
                     <i className="far fa-eye-slash" data-cy="iconHide" />
                   ) : (
                     <i className="far fa-eye" data-cy="iconShow" />

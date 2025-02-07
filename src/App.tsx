@@ -93,6 +93,7 @@ export const App: React.FC = () => {
               {!loading && filterTodos.length > 0 && (
                 <TodoList
                   todos={filterTodos}
+                  selectedTodo={selectedTodo}
                   onShowModal={handleShowModal}
                   onCloseModal={handleClearSelectedTodoId}
                 />
