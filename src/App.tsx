@@ -61,10 +61,14 @@ export const App: React.FC = () => {
       .catch(console.error);
   };
 
+  const handleClearSelectedTodoId = () => {};
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
     setSelectedTodo(null);
+
+    handleClearSelectedTodoId();
   };
 
   return (
@@ -87,7 +91,11 @@ export const App: React.FC = () => {
             <div className="block">
               {loading && <Loader />}
               {!loading && filterTodos.length > 0 && (
-                <TodoList todos={filterTodos} onShowModal={handleShowModal} />
+                <TodoList
+                  todos={filterTodos}
+                  onShowModal={handleShowModal}
+                  onCloseModal={handleClearSelectedTodoId}
+                />
               )}
             </div>
           </div>

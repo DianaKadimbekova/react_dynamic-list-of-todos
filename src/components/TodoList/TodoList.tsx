@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Todo } from '../../types/Todo';
 
 interface Props {
   todos: Todo[];
   onShowModal: (todo: Todo) => void;
+  onCloseModal: () => void;
 }
 
-export const TodoList: React.FC<Props> = ({ todos, onShowModal }) => {
+export const TodoList: React.FC<Props> = ({
+  todos,
+  onShowModal,
+  onCloseModal,
+}) => {
   const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
 
   const handleShowModalButton = (todo: Todo) => {
     setSelectedTodoId(todo.id);
     onShowModal(todo);
   };
+
+  useEffect(() => {
+    if (selectedTodoId === null) {
+      onCloseModal();
+    }
+  }, [selectedTodoId, onCloseModal]);
 
   return (
     <table className="table is-narrow is-fullwidth">
