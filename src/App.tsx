@@ -7,9 +7,8 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { getTodos, getUser } from './api';
+import { getTodos } from './api';
 import { Todo } from './types/Todo';
-import { User } from './types/User';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -17,7 +16,6 @@ export const App: React.FC = () => {
   const [selected, setSelected] = useState<string>('all');
   const [query, setQuery] = useState('');
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -54,21 +52,11 @@ export const App: React.FC = () => {
   const handleShowModal = (todo: Todo) => {
     setSelectedTodo(todo);
     setIsModalOpen(true);
-
-    getUser(todo.userId)
-      .then(user => setSelectedUser(user))
-      // eslint-disable-next-line
-      .catch(console.error);
   };
-
-  const handleClearSelectedTodoId = () => {};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setSelectedUser(null);
     setSelectedTodo(null);
-
-    handleClearSelectedTodoId();
   };
 
   return (
@@ -95,7 +83,6 @@ export const App: React.FC = () => {
                   todos={filterTodos}
                   selectedTodo={selectedTodo}
                   onShowModal={handleShowModal}
-                  onCloseModal={handleClearSelectedTodoId}
                 />
               )}
             </div>
@@ -103,12 +90,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {isModalOpen && selectedTodo && selectedUser && (
-        <TodoModal
-          todo={selectedTodo}
-          user={selectedUser}
-          onClose={handleCloseModal}
-        />
+      {isModalOpen && selectedTodo && (
+        <TodoModal todo={selectedTodo} onClose={handleCloseModal} />
       )}
     </>
   );

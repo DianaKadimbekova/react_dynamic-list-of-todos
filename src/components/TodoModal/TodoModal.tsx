@@ -2,33 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
+import { getUser } from '../../api';
 
 interface TodoModalProps {
   todo: Todo;
-  user: User;
   onClose: () => void;
 }
 
-export const TodoModal: React.FC<TodoModalProps> = ({
-  todo,
-  user,
-  onClose,
-}) => {
-  const [isLoading, setIsLoading] = useState(true);
+export const TodoModal: React.FC<TodoModalProps> = ({ todo, onClose }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    });
-
-    return () => clearTimeout(timer);
-  }, []);
+    getUser(todo.userId)
+      .then(data => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -60,7 +58,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
 
                 {' by '}
 
-                <a href={`mailto:${user.email}`}>{user.name}</a>
+                <a href={`mailto:${user?.email}`}>{user?.name}</a>
               </p>
             ) : (
               <p className="block" data-cy="modal-user">
@@ -68,7 +66,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
 
                 {' by '}
 
-                <a href={`mailto:${user.email}`}>{user.name}</a>
+                <a href={`mailto:${user?.email}`}>{user?.name}</a>
               </p>
             )}
           </div>

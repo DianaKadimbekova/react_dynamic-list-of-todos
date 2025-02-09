@@ -1,32 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Todo } from '../../types/Todo';
 
 interface Props {
   todos: Todo[];
   onShowModal: (todo: Todo) => void;
-  onCloseModal: () => void;
   selectedTodo: Todo | null;
 }
 
 export const TodoList: React.FC<Props> = ({
   todos,
   onShowModal,
-  onCloseModal,
   selectedTodo,
 }) => {
-  const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
-
-  const handleShowModalButton = (todo: Todo) => {
-    setSelectedTodoId(todo.id);
-    onShowModal(todo);
-  };
-
-  useEffect(() => {
-    if (selectedTodoId === null) {
-      onCloseModal();
-    }
-  }, [selectedTodoId, onCloseModal]);
-
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -48,7 +33,7 @@ export const TodoList: React.FC<Props> = ({
             <td className="is-vcentered">{todo.id}</td>
             <td className="is-vcentered">
               {todo.completed && (
-                <span className="icon">
+                <span className="icon" data-cy="iconCompleted">
                   <i className="fas fa-check" />
                 </span>
               )}
@@ -67,7 +52,7 @@ export const TodoList: React.FC<Props> = ({
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => handleShowModalButton(todo)}
+                onClick={() => onShowModal(todo)}
               >
                 <span className="icon">
                   {selectedTodo?.id === todo.id ? (
